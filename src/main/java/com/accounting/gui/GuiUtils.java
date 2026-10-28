@@ -481,33 +481,52 @@ public class GuiUtils {
     /**
      * Creates a Status Badge Pill label (e.g. "Active", "Balanced", "Imbalance").
      * Draws an authentic Vercel-style status dot and rounded background.
+     * Uses a fixed intrinsic size so every pill renders at exactly the same dimensions.
      */
     public static JLabel createBadgePill(String text, boolean isSuccess) {
-        String cleanText = text.replace("✓", "").replace("⚠", "").trim();
+        String cleanText = text.replace("\u2713", "").replace("\u26A0", "").trim();
+        final int pillH = 22;
+        final int dotSize = 6;
+        final int padLeft = 22;   // space for dot + gap
+        final int padRight = 10;
+        final int hPad = 4;       // outer horizontal margin each side
+
         JLabel pill = new JLabel(cleanText, SwingConstants.CENTER) {
+            @Override
+            public Dimension getPreferredSize() {
+                FontMetrics fm = getFontMetrics(getFont());
+                int textW = fm.stringWidth(getText());
+                int w = hPad + padLeft + textW + padRight + hPad;
+                int h = pillH + 6; // 3px vertical margin top+bottom
+                return new Dimension(w, h);
+            }
+            @Override
+            public Dimension getMinimumSize() { return getPreferredSize(); }
+            @Override
+            public Dimension getMaximumSize() { return getPreferredSize(); }
+
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                int pillH = 22;
-                int pillY = (getHeight() - pillH) / 2;
-                int pillW = getWidth() - 10;
-                int pillX = 5;
+                Dimension pref = getPreferredSize();
+                int pw = pref.width - hPad * 2;
+                int px = (getWidth() - pw) / 2;
+                int py = (getHeight() - pillH) / 2;
 
                 // Background
                 g2.setColor(getBackground());
-                g2.fillRoundRect(pillX, pillY, pillW, pillH, pillH, pillH);
+                g2.fillRoundRect(px, py, pw, pillH, pillH, pillH);
 
                 // 1px Border
                 g2.setColor(isSuccess ? ThemeManager.SUCCESS_BORDER : ThemeManager.DANGER_BORDER);
-                g2.drawRoundRect(pillX, pillY, pillW - 1, pillH - 1, pillH, pillH);
+                g2.drawRoundRect(px, py, pw - 1, pillH - 1, pillH, pillH);
 
                 // Status Dot Indicator (Vercel Style)
                 g2.setColor(isSuccess ? ThemeManager.SUCCESS_COLOR : ThemeManager.DANGER_COLOR);
-                int dotSize = 6;
                 int dotY = (getHeight() - dotSize) / 2;
-                g2.fillOval(pillX + 10, dotY, dotSize, dotSize);
+                g2.fillOval(px + 8, dotY, dotSize, dotSize);
 
                 g2.dispose();
                 super.paintComponent(g);
@@ -515,7 +534,7 @@ public class GuiUtils {
         };
         pill.setOpaque(false);
         pill.setFont(ThemeManager.FONT_TINY);
-        pill.setBorder(new EmptyBorder(0, 20, 0, 10));
+        pill.setBorder(new EmptyBorder(0, padLeft, 0, padRight));
 
         if (isSuccess) {
             pill.setBackground(ThemeManager.SUCCESS_BG);
@@ -529,6 +548,7 @@ public class GuiUtils {
 
     /**
      * Creates an authentic Vercel pill badge with customizable classification styling.
+     * Uses a fixed intrinsic size so every pill renders at exactly the same dimensions.
      */
     public static JLabel createPill(String text, String type) {
         Color bg, border, fg;
@@ -551,21 +571,38 @@ public class GuiUtils {
         }
 
         final Color fBg = bg, fBorder = border, fFg = fg;
+        final int pillH = 20;
+        final int hTextPad = 10;
+        final int hMargin = 2;
+
         JLabel pill = new JLabel(text, SwingConstants.CENTER) {
+            @Override
+            public Dimension getPreferredSize() {
+                FontMetrics fm = getFontMetrics(getFont());
+                int textW = fm.stringWidth(getText());
+                int w = hMargin * 2 + hTextPad * 2 + textW;
+                int h = pillH + 6;
+                return new Dimension(w, h);
+            }
+            @Override
+            public Dimension getMinimumSize() { return getPreferredSize(); }
+            @Override
+            public Dimension getMaximumSize() { return getPreferredSize(); }
+
             @Override
             protected void paintComponent(Graphics g) {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-                int pillH = 20;
-                int pillY = (getHeight() - pillH) / 2;
-                int pillW = getWidth() - 4;
-                int pillX = 2;
+                Dimension pref = getPreferredSize();
+                int pw = pref.width - hMargin * 2;
+                int px = (getWidth() - pw) / 2;
+                int py = (getHeight() - pillH) / 2;
 
                 g2.setColor(fBg);
-                g2.fillRoundRect(pillX, pillY, pillW, pillH, pillH, pillH);
+                g2.fillRoundRect(px, py, pw, pillH, pillH, pillH);
                 g2.setColor(fBorder);
-                g2.drawRoundRect(pillX, pillY, pillW - 1, pillH - 1, pillH, pillH);
+                g2.drawRoundRect(px, py, pw - 1, pillH - 1, pillH, pillH);
                 g2.dispose();
                 super.paintComponent(g);
             }
@@ -573,7 +610,7 @@ public class GuiUtils {
         pill.setOpaque(false);
         pill.setFont(ThemeManager.FONT_TINY);
         pill.setForeground(fFg);
-        pill.setBorder(new EmptyBorder(2, 10, 2, 10));
+        pill.setBorder(new EmptyBorder(2, hTextPad, 2, hTextPad));
         return pill;
     }
 
