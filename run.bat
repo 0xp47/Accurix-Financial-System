@@ -70,7 +70,22 @@ if errorlevel 1 (
 echo [OK] Java 17 detected.
 
 echo [*] Checking MySQL connection on port 3306...
-powershell -Command "$t = New-Object Net.Sockets.TcpClient; try { $t.Connect('127.0.0.1', 3306); Write-Host '[OK] MySQL is active and listening on port 3306.'; $t.Close() } catch { Write-Host '[WARN] MySQL port 3306 not responding. Please make sure MySQL is started in XAMPP.' }"
+powershell -Command "$t = New-Object Net.Sockets.TcpClient; try { $t.Connect('127.0.0.1', 3306); Write-Host '[OK] MySQL is active and listening on port 3306.'; $t.Close(); exit 0 } catch { exit 1 }"
+if errorlevel 1 (
+    echo [WARN] MySQL is not responding on port 3306.
+    if exist "%XAMPP_DIR%\mysql\bin\mysqld.exe" (
+        echo [*] Auto-starting XAMPP MySQL server...
+        if exist "%XAMPP_DIR%\mysql\data\*.pid" del /F /Q "%XAMPP_DIR%\mysql\data\*.pid" >nul 2>&1
+        start "MySQL Daemon" /B "%XAMPP_DIR%\mysql\bin\mysqld.exe" --defaults-file="%XAMPP_DIR%\mysql\bin\my.ini" --standalone
+        timeout /t 3 /nobreak >nul
+        powershell -Command "$t = New-Object Net.Sockets.TcpClient; try { $t.Connect('127.0.0.1', 3306); Write-Host '[OK] MySQL is now active on port 3306.'; $t.Close(); exit 0 } catch { exit 1 }"
+        if errorlevel 1 (
+            echo [WARN] Could not auto-start MySQL. Please ensure MySQL is started in XAMPP Control Panel.
+        )
+    ) else (
+        echo [WARN] Please make sure MySQL is started in XAMPP.
+    )
+)
 goto :eof
 
 :DEPLOY_WAR

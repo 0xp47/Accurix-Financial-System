@@ -88,6 +88,19 @@ public final class DBConnection {
     }
 
     /**
+     * Quickly verifies if database is reachable and active.
+     *
+     * @return true if database responds, false otherwise
+     */
+    public static boolean isConnected() {
+        try (Connection conn = getConnection()) {
+            return conn != null && !conn.isClosed();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * Safely rolls back a transaction without propagating exceptions.
      *
      * @param conn active connection

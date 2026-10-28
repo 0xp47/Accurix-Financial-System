@@ -42,4 +42,13 @@ public class PasswordUtilTest {
         assertFalse(PasswordUtil.checkPassword(null, "somehash"));
         assertFalse(PasswordUtil.checkPassword("password", "invalid-hash-string"));
     }
+
+    @Test
+    public void testDefaultAccountCredentials() {
+        String adminHash = "$2a$10$eEb1kdfA976Hdk6PEA3Qh.NvQr0Lwu8Gw722slfqscuJ/UiHeF3/2";
+        String accountantHash = "$2a$10$eQ3ekID568jC/vppifHc1eVXfVy.y6rYYlEKNK.NRDOhS1Gx2K2Em";
+
+        assertTrue("admin123 must match default admin hash", PasswordUtil.checkPassword("admin123", adminHash));
+        assertTrue("password123 must match default accountant hash", PasswordUtil.checkPassword("password123", accountantHash));
+    }
 }

@@ -43,6 +43,13 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        if (!com.accounting.util.DBConnection.isConnected()) {
+            req.setAttribute("error", "Database offline: Unable to connect to MySQL on port 3306. Please start MySQL in XAMPP.");
+            req.setAttribute("enteredUsername", username.trim());
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
+            return;
+        }
+
         User user = userDAO.authenticate(username.trim(), password);
 
         if (user != null) {

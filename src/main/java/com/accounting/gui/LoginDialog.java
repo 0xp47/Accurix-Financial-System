@@ -145,6 +145,12 @@ public class LoginDialog extends JDialog {
         btnLogin.setEnabled(false);
         lblError.setText("Authenticating credentials...");
 
+        if (!com.accounting.util.DBConnection.isConnected()) {
+            lblError.setText("Database offline: Please start MySQL in XAMPP (port 3306).");
+            btnLogin.setEnabled(true);
+            return;
+        }
+
         User user = userDAO.authenticate(username, password);
         if (user != null) {
             this.authenticatedUser = user;
