@@ -99,7 +99,11 @@ CREATE TABLE `journal_entry_lines` (
 INSERT INTO `users` (`id`, `username`, `password_hash`, `full_name`, `role`) VALUES
 (1, 'admin', '$2a$10$eEb1kdfA976Hdk6PEA3Qh.NvQr0Lwu8Gw722slfqscuJ/UiHeF3/2', 'Administrator', 'ADMIN'),
 (2, 'accountant', '$2a$10$eQ3ekID568jC/vppifHc1eVXfVy.y6rYYlEKNK.NRDOhS1Gx2K2Em', 'Senior Accountant', 'ACCOUNTANT'),
-(3, 'igabutan', '$2a$10$eQ3ekID568jC/vppifHc1eVXfVy.y6rYYlEKNK.NRDOhS1Gx2K2Em', 'Ivan G. Gabutan', 'ACCOUNTANT');
+(3, 'igabutan', '$2a$10$eQ3ekID568jC/vppifHc1eVXfVy.y6rYYlEKNK.NRDOhS1Gx2K2Em', 'Ivan G. Gabutan', 'ACCOUNTANT')
+ON DUPLICATE KEY UPDATE 
+    `password_hash` = VALUES(`password_hash`),
+    `full_name` = VALUES(`full_name`),
+    `role` = VALUES(`role`);
 
 -- 2. Insert Chart of Accounts
 -- Assets (1000s)
