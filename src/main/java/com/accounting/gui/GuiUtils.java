@@ -75,68 +75,45 @@ public class GuiUtils {
 
         g2.setColor(fgColor != null ? fgColor : Color.WHITE);
 
-        if (size <= 20) {
-            float sw = size == 16 ? 1.5f : 1.8f;
-            g2.setStroke(new BasicStroke(sw, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        // Vector Balance Scales — Exactly matching Web SVG (viewBox 0 0 24 24)
+        // In Web: 15px SVG centered inside 26px badge (padding ratio ~0.20 on each side)
+        float innerSize = size * 0.60f;
+        float ox = (size - innerSize) / 2.0f;
+        float oy = (size - innerSize) / 2.0f;
+        float s = innerSize / 24.0f;
 
-            int midX = size / 2;
-            g2.drawLine(midX, 3, midX, size - 4);
-            g2.drawLine(3, 5, size - 4, 5);
-            g2.drawLine(midX - 3, size - 4, midX + 3, size - 4);
+        float strokeW = Math.max(1.1f, 1.8f * s);
+        g2.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 
-            Path2D.Float leftPan = new Path2D.Float();
-            leftPan.moveTo(3, 8.5f);
-            leftPan.quadTo(5, 11f, 7, 8.5f);
-            leftPan.closePath();
-            g2.fill(leftPan);
+        // Central vertical mast: M12 4v16
+        g2.draw(new Line2D.Float(ox + 12f * s, oy + 4f * s, ox + 12f * s, oy + 20f * s));
+        // Grounded base: M7 20h10
+        g2.draw(new Line2D.Float(ox + 7f * s, oy + 20f * s, ox + 17f * s, oy + 20f * s));
+        // Balance beam: M4 7h16
+        g2.draw(new Line2D.Float(ox + 4f * s, oy + 7f * s, ox + 20f * s, oy + 7f * s));
+        // Fulcrum pivot: circle cx="12" cy="4" r="1.5"
+        float r = 1.5f * s;
+        g2.fill(new Ellipse2D.Float(ox + (12f - r) * s, oy + (4f - r) * s, r * 2f, r * 2f));
 
-            Path2D.Float rightPan = new Path2D.Float();
-            rightPan.moveTo(size - 7, 8.5f);
-            rightPan.quadTo(size - 5, 11f, size - 3, 8.5f);
-            rightPan.closePath();
-            g2.fill(rightPan);
+        // Left Pan suspension cords: M6 7l-2 5 and M6 7l2 5
+        g2.draw(new Line2D.Float(ox + 6f * s, oy + 7f * s, ox + 4f * s, oy + 12f * s));
+        g2.draw(new Line2D.Float(ox + 6f * s, oy + 7f * s, ox + 8f * s, oy + 12f * s));
+        // Left Pan dish: M3.5 12c0 2 5 2 5 0z
+        Path2D.Float leftDish = new Path2D.Float();
+        leftDish.moveTo(ox + 3.5f * s, oy + 12f * s);
+        leftDish.curveTo(ox + 3.5f * s, oy + 14.5f * s, ox + 8.5f * s, oy + 14.5f * s, ox + 8.5f * s, oy + 12f * s);
+        leftDish.closePath();
+        g2.fill(leftDish);
 
-            g2.fillOval(midX - 1, 2, 2, 2);
-        } else {
-            float strokeW = Math.max(1.8f, size / 24.0f);
-            g2.setStroke(new BasicStroke(strokeW, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-
-            float pad = size * 0.20f;
-            float w = size - (pad * 2);
-            float h = size - (pad * 2);
-            float sX = w / 24f;
-            float sY = h / 24f;
-
-            // Center spine
-            g2.draw(new Line2D.Float(pad + (12 * sX), pad + (5 * sY), pad + (12 * sX), pad + (19 * sY)));
-            // Sturdy grounded base
-            g2.draw(new Line2D.Float(pad + (7 * sX), pad + (19 * sY), pad + (17 * sX), pad + (19 * sY)));
-            // Sleek horizontal balance beam
-            g2.draw(new Line2D.Float(pad + (4.5f * sX), pad + (7.5f * sY), pad + (19.5f * sX), pad + (7.5f * sY)));
-            // Fulcrum pivot
-            float r = Math.max(2.5f, size / 16f);
-            g2.fill(new Ellipse2D.Float(pad + (12 * sX) - r / 2, pad + (5 * sY) - r / 2, r, r));
-
-            // Left Pan Suspension
-            g2.draw(new Line2D.Float(pad + (6 * sX), pad + (7.5f * sY), pad + (3.8f * sX), pad + (12.5f * sY)));
-            g2.draw(new Line2D.Float(pad + (6 * sX), pad + (7.5f * sY), pad + (8.2f * sX), pad + (12.5f * sY)));
-            // Left Pan dish (smooth arc/bowl)
-            Path2D.Float leftDish = new Path2D.Float();
-            leftDish.moveTo(pad + (3.2f * sX), pad + (12.5f * sY));
-            leftDish.quadTo(pad + (6f * sX), pad + (15.5f * sY), pad + (8.8f * sX), pad + (12.5f * sY));
-            leftDish.closePath();
-            g2.fill(leftDish);
-
-            // Right Pan Suspension
-            g2.draw(new Line2D.Float(pad + (18 * sX), pad + (7.5f * sY), pad + (15.8f * sX), pad + (12.5f * sY)));
-            g2.draw(new Line2D.Float(pad + (18 * sX), pad + (7.5f * sY), pad + (20.2f * sX), pad + (12.5f * sY)));
-            // Right Pan dish (smooth arc/bowl)
-            Path2D.Float rightDish = new Path2D.Float();
-            rightDish.moveTo(pad + (15.2f * sX), pad + (12.5f * sY));
-            rightDish.quadTo(pad + (18f * sX), pad + (15.5f * sY), pad + (20.8f * sX), pad + (12.5f * sY));
-            rightDish.closePath();
-            g2.fill(rightDish);
-        }
+        // Right Pan suspension cords: M18 7l-2 5 and M18 7l2 5
+        g2.draw(new Line2D.Float(ox + 18f * s, oy + 7f * s, ox + 16f * s, oy + 12f * s));
+        g2.draw(new Line2D.Float(ox + 18f * s, oy + 7f * s, ox + 20f * s, oy + 12f * s));
+        // Right Pan dish: M15.5 12c0 2 5 2 5 0z
+        Path2D.Float rightDish = new Path2D.Float();
+        rightDish.moveTo(ox + 15.5f * s, oy + 12f * s);
+        rightDish.curveTo(ox + 15.5f * s, oy + 14.5f * s, ox + 20.5f * s, oy + 14.5f * s, ox + 20.5f * s, oy + 12f * s);
+        rightDish.closePath();
+        g2.fill(rightDish);
 
         g2.dispose();
         return image;
@@ -207,57 +184,83 @@ public class GuiUtils {
 
         switch (key) {
             case "DASHBOARD":
-                g2.drawRoundRect(1, 1, 5, 5, 2, 2);
-                g2.drawRoundRect(9, 1, 5, 5, 2, 2);
-                g2.drawRoundRect(1, 9, 5, 5, 2, 2);
-                g2.drawRoundRect(9, 9, 5, 5, 2, 2);
+                g2.drawRoundRect(2, 2, 5, 5, 1, 1);
+                g2.drawRoundRect(9, 2, 5, 5, 1, 1);
+                g2.drawRoundRect(2, 9, 5, 5, 1, 1);
+                g2.drawRoundRect(9, 9, 5, 5, 1, 1);
                 break;
             case "JOURNALS":
-                g2.drawRoundRect(2, 1, 11, 13, 2, 2);
-                g2.drawLine(5, 5, 10, 5);
-                g2.drawLine(5, 8, 10, 8);
-                g2.drawLine(5, 11, 8, 11);
+                Path2D.Float doc = new Path2D.Float();
+                doc.moveTo(3, 14);
+                doc.lineTo(3, 2);
+                doc.lineTo(10, 2);
+                doc.lineTo(13, 5);
+                doc.lineTo(13, 14);
+                doc.closePath();
+                g2.draw(doc);
+                g2.drawLine(10, 2, 10, 5);
+                g2.drawLine(10, 5, 13, 5);
+                g2.drawLine(5, 8, 11, 8);
+                g2.drawLine(5, 11, 9, 11);
                 break;
             case "LEDGER":
-                g2.drawRoundRect(1, 2, 13, 11, 2, 2);
-                g2.drawLine(7, 2, 7, 13);
-                g2.drawLine(3, 5, 5, 5);
-                g2.drawLine(9, 5, 12, 5);
-                g2.drawLine(3, 8, 5, 8);
-                g2.drawLine(9, 8, 12, 8);
+                g2.drawRoundRect(2, 2, 12, 12, 2, 2);
+                g2.drawLine(8, 2, 8, 14);
+                g2.drawLine(4, 5, 6, 5);
+                g2.drawLine(10, 5, 12, 5);
+                g2.drawLine(4, 8, 6, 8);
+                g2.drawLine(10, 8, 12, 8);
+                g2.drawLine(4, 11, 6, 11);
+                g2.drawLine(10, 11, 12, 11);
+                break;
+            case "ACCOUNTS":
+                g2.fillOval(2, 3, 2, 2);
+                g2.fillOval(2, 7, 2, 2);
+                g2.fillOval(2, 11, 2, 2);
+                g2.drawLine(6, 4, 14, 4);
+                g2.drawLine(6, 8, 14, 8);
+                g2.drawLine(6, 12, 14, 12);
                 break;
             case "TRIAL_BALANCE":
                 g2.drawLine(8, 2, 8, 14);
+                g2.drawLine(5, 14, 11, 14);
                 g2.drawLine(3, 4, 13, 4);
-                g2.drawLine(2, 14, 14, 14);
-                g2.drawLine(3, 4, 1, 8); g2.drawLine(3, 4, 5, 8); g2.drawLine(1, 8, 5, 8);
-                g2.drawLine(13, 4, 11, 8); g2.drawLine(13, 4, 15, 8); g2.drawLine(11, 8, 15, 8);
+                g2.fillOval(7, 2, 2, 2);
+                Path2D.Float lp = new Path2D.Float();
+                lp.moveTo(4, 4);
+                lp.lineTo(2, 8);
+                lp.lineTo(6, 8);
+                lp.closePath();
+                g2.draw(lp);
+                Path2D.Float rp = new Path2D.Float();
+                rp.moveTo(12, 4);
+                rp.lineTo(10, 8);
+                rp.lineTo(14, 8);
+                rp.closePath();
+                g2.draw(rp);
                 break;
             case "INCOME_STATEMENT":
-                g2.drawLine(2, 13, 14, 13);
-                g2.drawLine(3, 10, 6, 6);
-                g2.drawLine(6, 6, 9, 8);
-                g2.drawLine(9, 8, 13, 3);
-                g2.drawLine(10, 3, 13, 3);
-                g2.drawLine(13, 3, 13, 6);
+                Path2D.Float trend = new Path2D.Float();
+                trend.moveTo(2, 12);
+                trend.lineTo(6, 8);
+                trend.lineTo(9, 10);
+                trend.lineTo(14, 4);
+                g2.draw(trend);
+                g2.drawLine(10, 4, 14, 4);
+                g2.drawLine(14, 4, 14, 8);
                 break;
             case "BALANCE_SHEET":
-                g2.drawRect(2, 5, 3, 8);
-                g2.drawRect(6, 2, 4, 11);
-                g2.drawRect(11, 7, 3, 6);
-                break;
-            case "ACCOUNTS":
-                g2.drawRoundRect(2, 4, 12, 10, 2, 2);
-                g2.drawLine(2, 7, 14, 7);
-                g2.drawLine(4, 2, 8, 2);
+                g2.drawRoundRect(2, 2, 12, 12, 2, 2);
+                g2.drawLine(2, 6, 14, 6);
+                g2.drawLine(8, 6, 8, 14);
                 break;
             case "SETTINGS":
-                g2.drawLine(2, 4, 14, 4);
-                g2.fillOval(5, 2, 4, 4);
-                g2.drawLine(2, 8, 14, 8);
-                g2.fillOval(9, 6, 4, 4);
-                g2.drawLine(2, 12, 14, 12);
-                g2.fillOval(4, 10, 4, 4);
+                g2.drawOval(6, 6, 4, 4);
+                g2.drawOval(4, 4, 8, 8);
+                g2.drawLine(8, 2, 8, 4);
+                g2.drawLine(8, 12, 8, 14);
+                g2.drawLine(2, 8, 4, 8);
+                g2.drawLine(12, 8, 14, 8);
                 break;
             case "SIGN_OUT":
                 g2.setColor(new Color(239, 68, 68)); // Red 500
@@ -265,12 +268,12 @@ public class GuiUtils {
                 g2.drawLine(2, 2, 2, 14);
                 g2.drawLine(2, 14, 6, 14);
                 g2.drawLine(6, 8, 14, 8);
-                g2.drawLine(10, 4, 14, 8);
-                g2.drawLine(10, 12, 14, 8);
+                g2.drawLine(11, 5, 14, 8);
+                g2.drawLine(11, 11, 14, 8);
                 break;
             case "PRINT":
-                g2.drawRect(5, 2, 6, 4);
-                g2.drawRoundRect(2, 6, 12, 6, 2, 2);
+                g2.drawRect(5, 2, 6, 3);
+                g2.drawRoundRect(2, 5, 12, 6, 2, 2);
                 g2.drawRect(4, 9, 8, 5);
                 break;
             default:

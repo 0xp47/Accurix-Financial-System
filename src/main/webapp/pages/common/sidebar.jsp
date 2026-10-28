@@ -75,9 +75,12 @@
         <div class="nav-section-title" style="margin-top: 12px;">Financial Reports</div>
         <a href="${pageContext.request.contextPath}/reports?type=trial_balance" 
            class="nav-item ${activePage == 'trial_balance' ? 'active' : ''}">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="12" y1="1" x2="12" y2="23"></line>
-                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v18"></path>
+                <path d="M7 21h10"></path>
+                <path d="M4 6h16"></path>
+                <path d="M6 6l-2 5h4z"></path>
+                <path d="M18 6l-2 5h4z"></path>
             </svg>
             <span>Trial Balance</span>
         </a>
@@ -91,10 +94,10 @@
         </a>
         <a href="${pageContext.request.contextPath}/reports?type=balance_sheet" 
            class="nav-item ${activePage == 'balance_sheet' ? 'active' : ''}">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                <line x1="8" y1="21" x2="16" y2="21"></line>
-                <line x1="12" y1="17" x2="12" y2="21"></line>
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                <path d="M3 9h18"></path>
+                <path d="M12 9v12"></path>
             </svg>
             <span>Balance Sheet</span>
         </a>
