@@ -1,0 +1,28 @@
+# Maven target directory & build artifacts
+target/
+*.war
+*.jar
+*.class
+
+# IDE & Editor files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+*.sublime-project
+*.sublime-workspace
+
+# Operating System files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Java crash dumps
+hs_err_pid*
+replay_pid*

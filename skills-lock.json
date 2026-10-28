@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "javafx-theming-icons-styling": {
+      "source": "johannesrabauer/javafx-skills",
+      "sourceType": "github",
+      "skillPath": "skills/javafx-theming-icons-styling/SKILL.md",
+      "computedHash": "0a28a94664d3c8c070a617ae16ad68b8d72eaecd28965fcaa749a0da15a860b8"
+    }
+  }
+}
