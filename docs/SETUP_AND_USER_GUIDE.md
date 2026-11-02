@@ -6,7 +6,7 @@ A modern, enterprise-grade Double-Entry Accounting & Ledger Suite built with **J
 
 ## 1. System Requirements & Prerequisites
 
-- **Java Development Kit (JDK)**: Java 17+ (LTS recommended)
+- **Java Development Kit (JDK)**: Java 25 LTS
 - **Servlet Container**: Apache Tomcat 9.x or 10.x
 - **Relational Database**: MySQL 8.0+ or MariaDB 10.5+
 - **Build Tool**: Apache Maven 3.8+ (A portable Maven wrapper is included in `.tools/apache-maven-3.9.6`)

@@ -228,7 +228,7 @@ public class SettingsPanel extends JPanel {
         body.add(Box.createVerticalStrut(12));
         body.add(createEntityRow("Security Protocol", "BCrypt Hashing", "Work Factor 10 salted cryptographic password verification"));
         body.add(Box.createVerticalStrut(12));
-        body.add(createEntityRow("Application Runtime", "Java 17 LTS", "100% Native Desktop Java GUI powered by FlatLaf (Vercel Geist Theme)"));
+        body.add(createEntityRow("Application Runtime", "Java 25 LTS", "100% Native Desktop Java GUI powered by FlatLaf (Vercel Geist Theme)"));
 
         JLabel activePill = GuiUtils.createBadgePill("Database Active", true);
 

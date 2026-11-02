@@ -2,7 +2,7 @@
 title Stop Accounting System
 color 0C
 set "CATALINA_HOME=C:\xampp\tomcat"
-set "JRE_HOME=C:\Program Files\Microsoft\jdk-17.0.18.8-hotspot"
+set "JRE_HOME=C:\Users\0xp47\.jdks\jdk-25.0.5"
 
 echo Stopping Apache Tomcat...
 if exist "%CATALINA_HOME%\bin\catalina.bat" (

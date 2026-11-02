@@ -133,7 +133,7 @@
 - [ ] MySQL service running on port 3306 (`accounting_db` populated with schema and seeds).
 - [ ] Master launcher `run.bat` or `Accounting System.lnk` ready on Desktop / project root.
 - [ ] For Web demo: Apache Tomcat running on port 8080 (`http://localhost:8080/accounting`).
-- [ ] For Desktop GUI demo: Java 17 runtime verified.
+- [ ] For Desktop GUI demo: Java 25 runtime verified.
 - [ ] Clean browser session opened in Chrome or Edge (for web demonstration).
 - [ ] Screen display scaled to 100% or 110% for crisp projector/screen sharing visibility.
 

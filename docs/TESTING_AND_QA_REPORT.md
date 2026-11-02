@@ -38,7 +38,7 @@ All major modules—including **User Authentication & Session Guard**, **Chart o
 
 ### 2.2 Test Environment
 - **Server:** Apache Tomcat 9.0.x / 10.1.x
-- **Runtime:** Java OpenJDK 17 LTS
+- **Runtime:** Java OpenJDK 25 LTS
 - **Database:** MySQL Server 8.0.x (`accounting_db` with InnoDB engine)
 - **Database Driver:** MySQL Connector/J 8.3.0
 - **Build Tool:** Apache Maven 3.9.6

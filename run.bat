@@ -1,6 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
-title Accurix Financial Launcher — Double-Entry Bookkeeping [PHP]
+title Accurix Financial Launcher — Double-Entry Bookkeeping [Java 25]
 
 :: =====================================================================
 :: Global Environment Configuration
@@ -10,19 +10,28 @@ set "XAMPP_DIR=C:\xampp"
 set "CATALINA_HOME=%XAMPP_DIR%\tomcat"
 set "CATALINA_BASE=%XAMPP_DIR%\tomcat"
 
-:: 1. Detect Java 17
-if defined JAVA_HOME (
+:: 1. Detect Java 25 Runtime
+:: Priority: Check dedicated Java 25 installations first so they override older system JAVA_HOME (e.g. Java 17)
+set "JAVA_25_HOME="
+if exist "%USERPROFILE%\.jdks\jdk-25.0.5\bin\java.exe" (
+    set "JAVA_25_HOME=%USERPROFILE%\.jdks\jdk-25.0.5"
+) else if exist "C:\Users\0xp47\.jdks\jdk-25.0.5\bin\java.exe" (
+    set "JAVA_25_HOME=C:\Users\0xp47\.jdks\jdk-25.0.5"
+) else if exist "C:\Program Files\Java\jdk-25\bin\java.exe" (
+    set "JAVA_25_HOME=C:\Program Files\Java\jdk-25"
+)
+
+if defined JAVA_25_HOME (
+    set "JAVA_HOME=%JAVA_25_HOME%"
+    set "JRE_HOME=%JAVA_25_HOME%"
+    set "JAVA_BIN=%JAVA_25_HOME%\bin\java.exe"
+    set "PATH=%JAVA_25_HOME%\bin;%PATH%"
+) else if defined JAVA_HOME (
     set "JAVA_BIN=%JAVA_HOME%\bin\java.exe"
     set "JRE_HOME=%JAVA_HOME%"
+    set "PATH=%JAVA_HOME%\bin;%PATH%"
 ) else (
-    if exist "C:\Program Files\Microsoft\jdk-17.0.18.8-hotspot\bin\java.exe" (
-        set "JAVA_HOME=C:\Program Files\Microsoft\jdk-17.0.18.8-hotspot"
-        set "JRE_HOME=C:\Program Files\Microsoft\jdk-17.0.18.8-hotspot"
-        set "JAVA_BIN=C:\Program Files\Microsoft\jdk-17.0.18.8-hotspot\bin\java.exe"
-    ) else (
-        set "JAVA_BIN=java"
-        set "JRE_HOME=C:\Program Files\Microsoft\jdk-17.0.18.8-hotspot"
-    )
+    set "JAVA_BIN=java"
 )
 
 :: 2. Detect Maven
@@ -60,14 +69,23 @@ goto MENU
 
 :CHECK_PREREQS
 echo.
-echo [*] Checking Java 17 runtime...
-"%JAVA_BIN%" -version >nul 2>&1
+echo [*] Checking Java 25 runtime...
+"%JAVA_BIN%" -version 2>&1 | findstr "25." >nul 2>&1
 if errorlevel 1 (
-    echo [ERROR] Java 17 was not found! Please ensure Java 17 is installed.
+    echo [ERROR] Java 25 was not found!
+    echo [*] Currently active Java runtime:
+    "%JAVA_BIN%" -version
+    echo.
+    echo [!] Accurix Financial requires Java 25 LTS.
+    echo [!] Please extract or install Java 25 to: %USERPROFILE%\.jdks\jdk-25.0.5
     pause
     goto MENU
 )
-echo [OK] Java 17 detected.
+for /f "tokens=*" %%v in ('"%JAVA_BIN%" -version 2^>^&1') do (
+    echo [OK] Java 25 detected: %%v
+    goto :done_java_check
+)
+:done_java_check
 
 echo [*] Checking MySQL connection on port 3306...
 powershell -Command "$t = New-Object Net.Sockets.TcpClient; try { $t.Connect('127.0.0.1', 3306); Write-Host '[OK] MySQL is active and listening on port 3306.'; $t.Close(); exit 0 } catch { exit 1 }"

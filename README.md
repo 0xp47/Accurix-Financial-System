@@ -1,6 +1,6 @@
 # Accurix Financial (Desktop GUI & Web Application)
 
-An enterprise-grade, Philippine GAAP / IFRS-compliant **Double-Entry Accounting & Financial Ledger Suite** developed in Java 17 LTS, JDBC, and MySQL 8. Features both a **100% Native Desktop Java GUI** (FlatLaf with Vercel Geist Light aesthetic, Java2D vector icons, custom taskbar icon) and a responsive **Web Application** (Java Servlets 4.0, JSP, JSTL 1.2, Apache Tomcat). 
+An enterprise-grade, Philippine GAAP / IFRS-compliant **Double-Entry Accounting & Financial Ledger Suite** developed in Java 25 LTS, JDBC, and MySQL 8. Features both a **100% Native Desktop Java GUI** (FlatLaf with Vercel Geist Light aesthetic, Java2D vector icons, custom taskbar icon) and a responsive **Web Application** (Java Servlets 4.0, JSP, JSTL 1.2, Apache Tomcat).
 
 Designed and structured according to Clean Architecture and MVC separation of concerns for a final computer science / information technology capstone project. All currency values are strictly formatted in **Philippine Pesos (₱)** with zero foreign currency symbols.
 
@@ -76,7 +76,7 @@ The system provides two interchangeable user interfaces backed by the exact same
 
 ## 4. Technology Stack
 
-- **Backend:** Java 17 LTS, Java Servlets 4.0, JSTL 1.2
+- **Backend:** Java 25 LTS, Java Servlets 4.0, JSTL 1.2
 - **Desktop GUI:** Java Swing, FlatLaf 3.4.1 (Vercel Geist Light), Java2D Vector Graphics
 - **Persistence:** JDBC, MySQL 8.0+ (InnoDB engine with foreign keys)
 - **Security:** jBCrypt 0.4 (10 salt rounds)
