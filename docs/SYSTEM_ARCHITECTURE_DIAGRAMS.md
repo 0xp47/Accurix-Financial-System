@@ -234,7 +234,7 @@ flowchart TD
 
     subgraph EntryPoints ["Execution Entry Points"]
         Launcher["run.bat Master Launcher / Accounting System.lnk"]
-        TomcatServer["Apache Tomcat 9/10 (Port 8080)"]
+        TomcatServer["Apache Tomcat 9/10 (Port 8888)"]
     end
 
     subgraph Controllers ["Controllers & GUI Panels"]

@@ -20,7 +20,7 @@ The system provides two interchangeable user interfaces backed by the exact same
 | **Branding / Icon** | Multi-res `app_icon.ico` (Taskbar & Titlebar) | Multi-res `favicon.png` & `favicon.ico` |
 | **Currency** | Strictly Philippine Pesos (`PHP ₱#,##0.00`) | Strictly Philippine Pesos (`PHP ₱#,##0.00`) |
 | **Persistence** | Direct JDBC connection pool (`accounting_db`) | Direct JDBC connection pool (`accounting_db`) |
-| **Platform** | Standalone Desktop Application Window | Web Browser (`http://localhost:8080/accounting`) |
+| **Platform** | Standalone Desktop Application Window | Web Browser (`http://localhost:8888/accounting`) |
 
 ---
 
@@ -81,9 +81,9 @@ The system provides two interchangeable user interfaces backed by the exact same
 - **Persistence:** JDBC, MySQL 8.0+ (InnoDB engine with foreign keys)
 - **Security:** jBCrypt 0.4 (10 salt rounds)
 - **Build & Packaging:** Apache Maven 3.9.6 (`accounting-system.war`)
-- **Server:** Apache Tomcat 9.0+ / 10.1+ (via XAMPP Tomcat on port 8080)
+- **Server:** Apache Tomcat 9.0+ / 10.1+ (via XAMPP Tomcat on port 8888)
 - **Frontend:** HTML5, Modern Vanilla JavaScript, CSS3 (Vercel Geist Light tokens)
-- **Testing:** JUnit 4.13.2 (22 unit tests passing, 100% pass rate)
+- **Testing:** JUnit 4.13.2 (23 unit tests passing, 100% pass rate)
 
 ---
 
@@ -111,9 +111,9 @@ The project includes a single master interactive launcher [`run.bat`](run.bat) a
 2. Double-click [`run.bat`](run.bat) or [`Accurix Financial.lnk`](Accurix%20Financial.lnk).
 3. Choose an option:
    - Press **`1`**: Launches the **100% Native Desktop Java GUI** window with high-DPI scaling, custom vector icons, and Windows taskbar branding.
-   - Press **`2`**: Builds the WAR, synchronizes it to Tomcat, launches Apache Tomcat on port 8080, and opens your browser at `http://localhost:8080/accounting`.
+   - Press **`2`**: Builds the WAR, synchronizes it to Tomcat, launches Apache Tomcat on port 8888, and opens your browser at `http://localhost:8888/accounting`.
    - Press **`3`**: Launches **BOTH** the Desktop GUI and the Web Application concurrently over the same database.
-   - Press **`4`**: Stops Apache Tomcat and frees port 8080.
+   - Press **`4`**: Stops Apache Tomcat and frees port 8888.
    - Press **`5`**: Exits the launcher.
 
 > [!NOTE]

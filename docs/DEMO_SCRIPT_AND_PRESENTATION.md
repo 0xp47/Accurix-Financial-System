@@ -132,7 +132,7 @@
 ### Pre-Demo Checklist (T-minus 5 minutes)
 - [ ] MySQL service running on port 3306 (`accounting_db` populated with schema and seeds).
 - [ ] Master launcher `run.bat` or `Accounting System.lnk` ready on Desktop / project root.
-- [ ] For Web demo: Apache Tomcat running on port 8080 (`http://localhost:8080/accounting`).
+- [ ] For Web demo: Apache Tomcat running on port 8080 (`http://localhost:8888/accounting`).
 - [ ] For Desktop GUI demo: Java 25 runtime verified.
 - [ ] Clean browser session opened in Chrome or Edge (for web demonstration).
 - [ ] Screen display scaled to 100% or 110% for crisp projector/screen sharing visibility.
@@ -144,7 +144,7 @@
 
 1. **Test Direct URL Bypass:**
    - **Action:** Open browser address bar and navigate directly to:
-     `http://localhost:8080/accounting/dashboard`
+     `http://localhost:8888/accounting/dashboard`
    - **Spoken Commentary:** *"Notice that before we log in, attempting to reach the internal dashboard immediately redirects us back to `/login`. Our custom `AuthFilter` intercepts unauthorized requests at the servlet layer."*
 2. **Test Invalid Login:**
    - **Action:** Type `admin` and an incorrect password `wrongpassword123`. Click **Sign in**.

@@ -112,7 +112,7 @@ The following test cases were manually executed against a live MySQL database an
 | **TC-AUTH-01** | Valid User Login | 1. Navigate to `/login`<br>2. Enter `admin` / `admin123`<br>3. Click "Sign in" | Redirects to `/dashboard`; session initialized; username visible in sidebar. | Matches expected. | **PASS** |
 | **TC-AUTH-02** | Invalid Password | 1. Enter `admin` / `wrongpass`<br>2. Submit form | Stays on `/login`; shows red error: "Invalid username or password". | Matches expected. | **PASS** |
 | **TC-AUTH-03** | Non-existent Username | 1. Enter `ghost` / `secret`<br>2. Submit form | Stays on `/login`; shows error message without revealing user existence. | Matches expected. | **PASS** |
-| **TC-AUTH-04** | Route Protection | 1. Clear cookies/session<br>2. Directly type `http://localhost:8080/accounting/dashboard` | Request intercepted by `AuthFilter`; 302 redirect to `/login`. | Matches expected. | **PASS** |
+| **TC-AUTH-04** | Route Protection | 1. Clear cookies/session<br>2. Directly type `http://localhost:8888/accounting/dashboard` | Request intercepted by `AuthFilter`; 302 redirect to `/login`. | Matches expected. | **PASS** |
 | **TC-AUTH-05** | Secure Logout | 1. Logged in as user<br>2. Click "Sign out" button | Session invalidated; redirected to `/login?logged_out=true`; Back button cannot access protected pages. | Matches expected. | **PASS** |
 | **TC-AUTH-06** | Profile Settings Update | 1. Go to `/settings`<br>2. Change Full Name to "Administrator User"<br>3. Save | Profile updated in MySQL; header immediately displays updated name. | Matches expected. | **PASS** |
 
@@ -263,7 +263,7 @@ During the development and testing cycle, the following 8 defects were detected,
 - **Module:** Security (`AuthFilter`)
 - **Summary:** Direct requests to `/pages/dashboard.jsp` bypassed `AuthFilter` if not mapped to `.jsp` extension.
 - **Steps to Reproduce:**
-  1. Enter direct URL `http://localhost:8080/accounting/pages/dashboard.jsp` in private window.
+  1. Enter direct URL `http://localhost:8888/accounting/pages/dashboard.jsp` in private window.
 - **Expected Result:** Redirect to `/login`.
 - **Actual Result:** Partial JSP rendered with empty session attributes.
 - **Severity:** Critical
@@ -276,7 +276,7 @@ During the development and testing cycle, the following 8 defects were detected,
 - **Summary:** System color-scheme dark mode media queries automatically forced dark styling on users with OS dark mode enabled.
 - **Steps to Reproduce:**
   1. Launch web browser in Windows 11 with system dark mode enabled.
-  2. Open `http://localhost:8080/accounting/login`.
+  2. Open `http://localhost:8888/accounting/login`.
 - **Expected Result:** High-contrast, clean Vercel Light UI as mandated by client requirements.
 - **Actual Result:** Page rendered with dark backgrounds and uncoordinated dark tokens.
 - **Severity:** Medium

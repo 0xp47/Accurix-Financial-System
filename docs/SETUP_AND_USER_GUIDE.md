@@ -71,7 +71,7 @@ The application includes a standalone Java Desktop GUI window built with Swing a
 2. Double-click `run.bat` and press **`2`**.
    - The script builds `target/accounting-system.war`, synchronizes it to `<TOMCAT_HOME>/webapps/accounting.war`, starts Tomcat on port 8080, and opens your default browser at:
    ```text
-   http://localhost:8080/accounting
+   http://localhost:8888/accounting
    ```
 
 ### Option C: Launch BOTH Systems Concurrently
@@ -88,7 +88,7 @@ Double-click `run.bat` and press **`3`**. Both the Desktop GUI and the Web appli
 ## 4. User Manual & Module Walkthrough
 
 ### 4.1 Authentication & Default Credentials
-Navigate to `http://localhost:8080/accounting-system/login`.
+Navigate to `http://localhost:8888/accounting-system/login`.
 
 | Username | Password | Role | Description |
 |:---|:---|:---|:---|

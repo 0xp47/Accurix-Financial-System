@@ -9,6 +9,7 @@ set "PROJECT_DIR=%~dp0"
 set "XAMPP_DIR=C:\xampp"
 set "CATALINA_HOME=%XAMPP_DIR%\tomcat"
 set "CATALINA_BASE=%XAMPP_DIR%\tomcat"
+set "TOMCAT_PORT=8888"
 
 :: 1. Detect Java 25 Runtime
 :: Priority: Check dedicated Java 25 installations first so they override older system JAVA_HOME (e.g. Java 17)
@@ -123,12 +124,16 @@ goto :eof
 
 :START_TOMCAT
 call :DEPLOY_WAR
-echo [*] Starting Apache Tomcat on port 8080...
+:: Ensure Tomcat HTTP connector is set to port 8888 (avoids Windows Hyper-V/NAT excluded port range 8044-8143)
+if exist "%CATALINA_HOME%\conf\server.xml" (
+    powershell -Command "$f='%CATALINA_HOME%\conf\server.xml'; $t=[IO.File]::ReadAllText($f); if ($t -match 'port=""8080""') { [IO.File]::WriteAllText($f, ($t -replace 'port=""8080""','port=""8888""')) }" >nul 2>&1
+)
+echo [*] Starting Apache Tomcat on port %TOMCAT_PORT%...
 start "Apache Tomcat (Accounting Web System)" cmd /c "set CATALINA_HOME=%CATALINA_HOME%&& set JRE_HOME=%JRE_HOME%&& %CATALINA_HOME%\bin\catalina.bat run"
 echo [*] Waiting for server initialization...
 ping 127.0.0.1 -n 4 >nul
-echo [*] Opening browser to http://localhost:8080/accounting ...
-start http://localhost:8080/accounting
+echo [*] Opening browser to http://localhost:%TOMCAT_PORT%/accounting ...
+start http://localhost:%TOMCAT_PORT%/accounting
 goto :eof
 
 :RUN_GUI
@@ -148,7 +153,7 @@ goto MENU
 call :CHECK_PREREQS
 call :START_TOMCAT
 echo.
-echo [OK] Accurix Web Application is running at http://localhost:8080/accounting
+echo [OK] Accurix Web Application is running at http://localhost:%TOMCAT_PORT%/accounting
 echo.
 echo Press any key to return to main menu...
 pause >nul
@@ -163,7 +168,7 @@ echo ======================================================================
 echo.
 call :START_TOMCAT
 echo.
-echo [*] Accurix Web Application is running at http://localhost:8080/accounting
+echo [*] Accurix Web Application is running at http://localhost:%TOMCAT_PORT%/accounting
 echo [*] Now launching Accurix Desktop Java GUI...
 echo.
 call "%MVN_CMD%" compile exec:java -q
@@ -189,7 +194,7 @@ echo [*] Stopping Apache Tomcat server...
 if exist "%CATALINA_HOME%\bin\catalina.bat" (
     cmd /c "set CATALINA_HOME=%CATALINA_HOME%&& set JRE_HOME=%JRE_HOME%&& %CATALINA_HOME%\bin\catalina.bat stop" >nul 2>&1
 )
-powershell -Command "$p = Get-NetTCPConnection -LocalPort 8080 -ErrorAction SilentlyContinue; if ($p) { Stop-Process -Id $p.OwningProcess -Force -ErrorAction SilentlyContinue; Write-Host '[OK] Tomcat process stopped.' } else { Write-Host '[OK] Port 8080 is clear.' }"
+powershell -Command "$p = Get-NetTCPConnection -LocalPort %TOMCAT_PORT% -ErrorAction SilentlyContinue; if ($p) { Stop-Process -Id $p.OwningProcess -Force -ErrorAction SilentlyContinue; Write-Host '[OK] Tomcat process stopped.' } else { Write-Host '[OK] Port %TOMCAT_PORT% is clear.' }"
 echo [OK] Web server stopped.
 goto :eof
 
